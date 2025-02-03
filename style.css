@@ -1,0 +1,93 @@
+#game-container {
+    position: relative;
+    width: 90vw; /* 90% of the viewport width */
+    height: 80vh; /* 80% of the viewport height */
+    border: 5px solid #333;
+    background-color: #fff;
+    overflow: hidden;
+    margin: 5vh auto; /* Center vertically */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add a shadow for better visibility */
+}
+
+#score-board, #timer {
+    font-size: 5vw; /* Responsive font size */
+}
+
+#fruit {
+    width: 15vw; /* Responsive size */
+    height: 15vw; /* Responsive size */
+}
+
+/* Base fruit style */
+#fruit {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Apple (red circle) */
+.apple {
+    background-color: red;
+    border-radius: 50%;
+}
+
+/* Green Apple (green circle) */
+.green-apple {
+    background-color: limegreen;
+    border-radius: 50%;
+}
+
+/* Banana (yellow rectangle with rounded corners) */
+.banana {
+    background-color: yellow;
+    border-radius: 20px; /* Rounded corners */
+    width: 80px; /* Longer shape */
+    height: 30px; /* Shorter height */
+    transform: rotate(-30deg); /* Slight tilt */
+}
+
+/* Lemon (yellow oval) */
+.lemon {
+    background-color: yellow;
+    border-radius: 50%; /* Perfect oval */
+    width: 60px; /* Wider than it is tall */
+    height: 40px;
+}
+
+/* Grapefruit (pink circle) */
+.grapefruit {
+    background-color: pink;
+    border-radius: 50%;
+}
+
+/* Watermelon (green oval with red inside) */
+.watermelon {
+    background-color: green;
+    border-radius: 50%;
+    width: 60px;
+    height: 40px;
+    position: relative;
+}
+
+.watermelon::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 40px;
+    height: 20px;
+    background-color: red;
+    border-radius: 50%;
+}
+
+@keyframes pop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+#fruit.clicked {
+    animation: pop 0.3s ease-in-out;
+}
