@@ -1,76 +1,59 @@
 // Select DOM elements
-const fruit = document.getElementById('fruit');
+const bubble = document.getElementById('bubble');
 const scoreElement = document.getElementById('score');
 const timeLeftElement = document.getElementById('time-left');
+const title = document.getElementById('title');
+const startButton = document.getElementById('start-button');
 
 // Initialize game variables
 let score = 0;
 let timeLeft = 30;
+let gameInterval;
 
-// Array of fruit types
-const fruitTypes = ['apple', 'green-apple', 'banana', 'lemon', 'grapefruit', 'watermelon'];
-
-// Add both click and touch events for cross-device compatibility
-fruit.addEventListener('click', handleFruitClick);
-fruit.addEventListener('touchstart', handleFruitClick);
-
-function handleFruitClick(event) {
-    event.preventDefault(); // Prevent default touch behavior (e.g., scrolling)
-    score++;
-    scoreElement.textContent = score;
-    moveFruit();
-}
-
-// Function to move the fruit to a random position and change its type
-function moveFruit() {
+// Function to move the bubble to a random position
+function moveBubble() {
     const gameContainer = document.getElementById('game-container');
     const containerWidth = gameContainer.offsetWidth;
     const containerHeight = gameContainer.offsetHeight;
 
-    // Get the current size of the fruit (since fruits now have different sizes)
-    const fruitWidth = fruit.offsetWidth;
-    const fruitHeight = fruit.offsetHeight;
+    const bubbleSize = bubble.offsetWidth;
 
-    // Calculate the maximum X and Y positions to keep the fruit inside the container
-    const maxX = containerWidth - fruitWidth;
-    const maxY = containerHeight - fruitHeight;
+    const maxX = containerWidth - bubbleSize;
+    const maxY = containerHeight - bubbleSize;
 
-    // Generate random positions within the valid range
     const randomX = Math.floor(Math.random() * maxX);
     const randomY = Math.floor(Math.random() * maxY);
 
-    // Randomly select a fruit type
-    const randomFruitType = fruitTypes[Math.floor(Math.random() * fruitTypes.length)];
+    // Move the bubble to a random position
+    bubble.style.left = `${randomX}px`;
+    bubble.style.top = `${randomY}px`;
 
-    // Clear previous classes and apply the new fruit type
-    fruit.className = ''; // Reset all classes
-    fruit.classList.add(randomFruitType); // Add the new fruit class
-
-    // Move the fruit to a random position
-    fruit.style.left = `${randomX}px`;
-    fruit.style.top = `${randomY}px`;
+    // Remove the "popping" class if it exists
+    bubble.classList.remove('popping');
 }
 
-fruit.addEventListener('click', () => {
-    fruit.classList.add('clicked');
-    setTimeout(() => fruit.classList.remove('clicked'), 300); // Remove the class after animation
-});
-
-// Function to increase the score when the fruit is clicked
-fruit.addEventListener('click', () => {
+// Function to handle bubble click/tap
+function handleBubbleClick() {
     score++;
     scoreElement.textContent = score;
-    moveFruit();
-});
+
+    // Trigger the pop animation
+    bubble.classList.add('popping');
+
+    // Wait for the animation to finish before moving the bubble
+    setTimeout(() => {
+        moveBubble();
+    }, 300); // Match the duration of the animation (0.3s)
+}
 
 // Countdown timer
 function startTimer() {
-    const timerInterval = setInterval(() => {
+    gameInterval = setInterval(() => {
         timeLeft--;
         timeLeftElement.textContent = timeLeft;
 
         if (timeLeft === 0) {
-            clearInterval(timerInterval);
+            clearInterval(gameInterval);
             alert(`Game Over! Your score is ${score}`);
             resetGame();
         }
@@ -83,14 +66,33 @@ function resetGame() {
     timeLeft = 30;
     scoreElement.textContent = score;
     timeLeftElement.textContent = timeLeft;
-    moveFruit();
-    startTimer();
+
+    // Hide the bubble and show the title/start button
+    bubble.style.display = 'none';
+    title.style.display = 'block';
+    startButton.style.display = 'block';
 }
 
 // Start the game
-const startButton = document.getElementById('start-button');
-startButton.addEventListener('click', () => {
-    startButton.style.display = 'none'; // Hide the button
+function startGame() {
+    // Hide the title and start button
+    title.style.display = 'none';
+    startButton.style.display = 'none';
+
+    // Show the bubble and start the timer
+    bubble.style.display = 'block';
+    moveBubble();
     startTimer();
-    moveFruit();
+}
+
+// Event listeners
+bubble.addEventListener('click', handleBubbleClick);
+bubble.addEventListener('touchstart', (event) => {
+    event.preventDefault(); // Prevent default touch behavior
+    handleBubbleClick();
 });
+
+startButton.addEventListener('click', startGame);
+
+// Initial setup
+resetGame();
