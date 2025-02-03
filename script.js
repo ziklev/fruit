@@ -16,9 +16,21 @@ function moveBubble() {
     const containerHeight = gameContainer.offsetHeight;
 
     // Generate a random size between 30px and 60px
-    const randomSize = Math.floor(Math.random() * 60 + 60); // Random size between 30 and 60
+    const randomSize = Math.floor(Math.random() * 30 + 30); // Random size between 30 and 60
     bubble.style.width = `${randomSize}px`;
     bubble.style.height = `${randomSize}px`;
+
+    // Generate a random border thickness between 2px and 6px
+    const randomBorderThickness = Math.floor(Math.random() * 5 + 2); // Random thickness between 2px and 6px
+    bubble.style.borderWidth = `${randomBorderThickness}px`;
+
+    // Generate a random color using HSL (hue, saturation, lightness)
+    const randomColor = `hsl(${Math.random() * 360}, 70%, 50%)`; // Random hue with fixed saturation and lightness
+    bubble.style.borderColor = randomColor;
+
+    // Optional: Add a glowing shadow effect
+    const randomShadowSize = Math.floor(Math.random() * 10 + 5); // Random shadow size between 5px and 15px
+    bubble.style.boxShadow = `0 0 ${randomShadowSize}px ${randomColor}`;
 
     // Calculate maximum X and Y positions based on the new size
     const maxX = containerWidth - randomSize;
