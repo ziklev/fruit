@@ -10,17 +10,21 @@ let score = 0;
 let timeLeft = 30;
 let gameInterval;
 
-// Function to move the bubble to a random position
 function moveBubble() {
     const gameContainer = document.getElementById('game-container');
     const containerWidth = gameContainer.offsetWidth;
     const containerHeight = gameContainer.offsetHeight;
 
-    const bubbleSize = bubble.offsetWidth;
+    // Generate a random size between 30px and 60px
+    const randomSize = Math.floor(Math.random() * 60 + 60); // Random size between 30 and 60
+    bubble.style.width = `${randomSize}px`;
+    bubble.style.height = `${randomSize}px`;
 
-    const maxX = containerWidth - bubbleSize;
-    const maxY = containerHeight - bubbleSize;
+    // Calculate maximum X and Y positions based on the new size
+    const maxX = containerWidth - randomSize;
+    const maxY = containerHeight - randomSize;
 
+    // Generate random positions within the valid range
     const randomX = Math.floor(Math.random() * maxX);
     const randomY = Math.floor(Math.random() * maxY);
 
@@ -32,10 +36,23 @@ function moveBubble() {
     bubble.classList.remove('popping');
 }
 
-// Function to handle bubble click/tap
+const randomBorderThickness = Math.floor(Math.random() * 5 + 2); // Random thickness between 2px and 6px
+bubble.style.borderWidth = `${randomBorderThickness}px`;
+
+const randomColor = `hsl(${Math.random() * 360}, 70%, 50%)`; // Random hue with fixed saturation and lightness
+bubble.style.borderColor = randomColor;
+
+const randomShadowSize = Math.floor(Math.random() * 10 + 5); // Random shadow size between 5px and 15px
+bubble.style.boxShadow = `0 0 ${randomShadowSize}px ${randomColor}`;
+
+const popSound = new Audio('pop.mp3'); // Replace 'pop.mp3' with your sound file
+
 function handleBubbleClick() {
     score++;
     scoreElement.textContent = score;
+
+    // Play the sound effect
+    popSound.play();
 
     // Trigger the pop animation
     bubble.classList.add('popping');
