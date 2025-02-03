@@ -1,93 +1,98 @@
-#game-container {
-    position: relative;
-    width: 90vw; /* 90% of the viewport width */
-    height: 80vh; /* 80% of the viewport height */
-    border: 5px solid #333;
-    background-color: #e0f7fa; /* Light blue background */
-    overflow: hidden;
-    margin: 5vh auto; /* Center vertically */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add a shadow for better visibility */
+// Select DOM elements
+const bubble = document.getElementById('bubble');
+const scoreElement = document.getElementById('score');
+const timeLeftElement = document.getElementById('time-left');
+const title = document.getElementById('title');
+const startButton = document.getElementById('start-button');
+
+// Initialize game variables
+let score = 0;
+let timeLeft = 30;
+let gameInterval;
+
+// Function to move the bubble to a random position
+function moveBubble() {
+    const gameContainer = document.getElementById('game-container');
+    const containerWidth = gameContainer.offsetWidth;
+    const containerHeight = gameContainer.offsetHeight;
+
+    const bubbleSize = bubble.offsetWidth;
+
+    const maxX = containerWidth - bubbleSize;
+    const maxY = containerHeight - bubbleSize;
+
+    const randomX = Math.floor(Math.random() * maxX);
+    const randomY = Math.floor(Math.random() * maxY);
+
+    // Move the bubble to a random position
+    bubble.style.left = `${randomX}px`;
+    bubble.style.top = `${randomY}px`;
+
+    // Remove the "popping" class if it exists
+    bubble.classList.remove('popping');
 }
 
-#score-board, #timer {
-    font-size: 5vw; /* Responsive font size */
+// Function to handle bubble click/tap
+function handleBubbleClick() {
+    score++;
+    scoreElement.textContent = score;
+
+    // Trigger the pop animation
+    bubble.classList.add('popping');
+
+    // Wait for the animation to finish before moving the bubble
+    setTimeout(() => {
+        moveBubble();
+    }, 300); // Match the duration of the animation (0.3s)
 }
 
-#fruit {
-    width: 15vw; /* Responsive size */
-    height: 15vw; /* Responsive size */
+// Countdown timer
+function startTimer() {
+    gameInterval = setInterval(() => {
+        timeLeft--;
+        timeLeftElement.textContent = timeLeft;
+
+        if (timeLeft === 0) {
+            clearInterval(gameInterval);
+            alert(`Game Over! Your score is ${score}`);
+            resetGame();
+        }
+    }, 1000);
 }
 
-/* Base fruit style */
-#fruit {
-    position: absolute;
-    width: 50px;
-    height: 50px;
-    cursor: pointer;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+// Reset the game
+function resetGame() {
+    score = 0;
+    timeLeft = 30;
+    scoreElement.textContent = score;
+    timeLeftElement.textContent = timeLeft;
+
+    // Hide the bubble and show the title/start button
+    bubble.style.display = 'none';
+    title.style.display = 'block';
+    startButton.style.display = 'block';
 }
 
-/* Apple (red circle) */
-.apple {
-    background-color: red;
-    border-radius: 50%;
+// Start the game
+function startGame() {
+    // Hide the title and start button
+    title.style.display = 'none';
+    startButton.style.display = 'none';
+
+    // Show the bubble and start the timer
+    bubble.style.display = 'block';
+    moveBubble();
+    startTimer();
 }
 
-/* Green Apple (green circle) */
-.green-apple {
-    background-color: limegreen;
-    border-radius: 50%;
-}
+// Event listeners
+bubble.addEventListener('click', handleBubbleClick);
+bubble.addEventListener('touchstart', (event) => {
+    event.preventDefault(); // Prevent default touch behavior
+    handleBubbleClick();
+});
 
-/* Banana (yellow rectangle with rounded corners) */
-.banana {
-    background-color: yellow;
-    border-radius: 20px; /* Rounded corners */
-    width: 80px; /* Longer shape */
-    height: 30px; /* Shorter height */
-    transform: rotate(-30deg); /* Slight tilt */
-}
+startButton.addEventListener('click', startGame);
 
-/* Lemon (yellow oval) */
-.lemon {
-    background-color: yellow;
-    border-radius: 50%; /* Perfect oval */
-    width: 60px; /* Wider than it is tall */
-    height: 40px;
-}
-
-/* Grapefruit (pink circle) */
-.grapefruit {
-    background-color: pink;
-    border-radius: 50%;
-}
-
-/* Watermelon (green oval with red inside) */
-.watermelon {
-    background-color: green;
-    border-radius: 50%;
-    width: 60px;
-    height: 40px;
-    position: relative;
-}
-
-.watermelon::after {
-    content: '';
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    width: 40px;
-    height: 20px;
-    background-color: red;
-    border-radius: 50%;
-}
-
-@keyframes pop {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.2); }
-    100% { transform: scale(1); }
-}
-
-#fruit.clicked {
-    animation: pop 0.3s ease-in-out;
-}
+// Initial setup
+resetGame();
