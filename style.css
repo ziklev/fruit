@@ -3,7 +3,7 @@
     width: 90vw; /* 90% of the viewport width */
     height: 80vh; /* 80% of the viewport height */
     border: 5px solid #333;
-    background-color: #fff;
+    background-color: #e0f7fa; /* Light blue background */
     overflow: hidden;
     margin: 5vh auto; /* Center vertically */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add a shadow for better visibility */
