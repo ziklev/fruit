@@ -54,8 +54,8 @@ body {
 /* Bubble */
 #bubble {
     position: absolute;
-    width: 60px;
-    height: 60px;
+    width: 60px; /* Initial size (will be overridden by JavaScript) */
+    height: 60px; /* Initial size (will be overridden by JavaScript) */
     background-color: transparent; /* Hollow bubble */
     border: 5px solid #333; /* Border color */
     border-radius: 50%; /* Perfect circle */
@@ -77,6 +77,7 @@ body {
 
 #bubble.popping {
     animation: pop 0.3s ease-in-out forwards; /* Apply the animation */
+	 box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Add a growing shadow */
 }
 }
 
