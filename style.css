@@ -57,10 +57,10 @@ body {
     width: 60px; /* Initial size (will be overridden by JavaScript) */
     height: 60px; /* Initial size (will be overridden by JavaScript) */
     background-color: transparent; /* Hollow bubble */
-    border: 5px solid #333; /* Border color */
+    border: 5px solid #333; /* Initial border (will be overridden by JavaScript) */
     border-radius: 50%; /* Perfect circle */
     cursor: pointer;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Initial shadow (will be overridden by JavaScript) */
 }
 
 /* Pop Animation */
